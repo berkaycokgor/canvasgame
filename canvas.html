@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="480" height="320"></canvas>
+<p id="hello" style="text-align:center">SCORE=0</p>
+
+<script>
+
+var canvas = document.getElementById("myCanvas");
+var CONTEXT = canvas.getContext("2d");
+var ballRadius = 10;
+var x = canvas.width/2;
+var y = canvas.height-30;
+var dx = 2;
+var dy = -2;
+var color="#0095DD";
+var paddleHeight = 10;
+var paddleWidth = 75;
+var paddleX = (canvas.width-paddleWidth) / 2;
+var rightPressed = false;
+var leftPressed = false;
+var yellowstatus=1;
+var redstatus=1;
+var purplestatus=1;
+var greenstatus=1;
+var bluestatus=1;
+var score=0;
+document.addEventListener("keydown", downhand, false);
+document.addEventListener("keyup", uphand, false);
+
+function downhand(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+    }
+}
+
+function uphand(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = false;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = false;
+    }
+}
+
+function drawBall() {
+    CONTEXT.beginPath();
+    CONTEXT.arc(x, y, ballRadius, 0, Math.PI*2);
+    
+    CONTEXT.fillStyle = color;
+    CONTEXT.fill();
+    CONTEXT.closePath();
+}
+function drawPaddle() {
+    CONTEXT.beginPath();
+    CONTEXT.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    CONTEXT.fillStyle = "#0095DD";
+    CONTEXT.fill();
+    CONTEXT.closePath();
+}
+
+function draw() {
+    CONTEXT.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
+    drawPaddle();
+    drawBricks();if(score==250){
+        alert("!!!!!! CONGRATZZZZZZ YOU  WON !!!!");
+        document.location.reload();
+        clearInterval(interval);
+    }
+    if(yellowstatus==1){
+    if(x + dx+ballRadius>=250 && x+dx+ballRadius<=350 && y+dy+ballRadius>=180 && y+dy+ballRadius<=210) {
+        window.yellowstatus=0;
+        var r = Math.floor(Math.random() * 2); 
+        dx = -dx+r;
+        dy = -dy+r;
+        window.score+=50;
+        document.getElementById("hello").innerHTML="SCORE = "+score;
+    }
+    }
+    if(redstatus==1){
+    if(x + dx+ballRadius>=60 && x+dx+ballRadius<=160 && y+dy+ballRadius>=80 && y+dy+ballRadius<=110) {
+        window.redstatus=0;
+        var r = Math.floor(Math.random() * 2); 
+        dx = -dx+r;
+        dy = -dy+r;
+        window.score+=20;
+        document.getElementById("hello").innerHTML="SCORE = "+score;
+    }
+    }
+    if(purplestatus==1){
+    if(x + dx+ballRadius>=120 && x+dx+ballRadius<=220 && y+dy+ballRadius>=180 && y+dy+ballRadius<=210) {
+        window.purplestatus=0;
+        var r = Math.floor(Math.random() * 2); 
+        dx = -dx+r;
+        dy = -dy+r;
+        window.score+=60;
+        document.getElementById("hello").innerHTML="SCORE = "+score;
+    }
+    }
+    if(greenstatus==1){
+    if(x + dx+ballRadius>=300 && x+dx+ballRadius<=400 && y+dy+ballRadius>=80 && y+dy+ballRadius<=110) {
+        window.greenstatus=0;
+        var r = Math.floor(Math.random() * 2); 
+        dx = -dx+r;
+        dy = -dy+r;
+        window.score+=80;
+        document.getElementById("hello").innerHTML="SCORE = "+score;
+    }
+    }
+    if(bluestatus==1){
+    if(x + dx+ballRadius>=180 && x+dx+ballRadius<=280 && y+dy+ballRadius>=80 && y+dy+ballRadius<=110) {
+        window.bluestatus=0;
+        var r = Math.floor(Math.random() * 2); 
+        dx = -dx+r;
+        dy = -dy+r;
+        window.score+=40;
+        document.getElementById("hello").innerHTML="SCORE = "+score;
+    }
+    }
+    if(x + dx+ballRadius>=190 && x+dx+ballRadius<=290 && y+dy+ballRadius>=250 && y+dy+ballRadius<=265) { 
+        dx = -dx;
+        dy = -dy;
+    }
+    
+
+    
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        window.color="#000000";
+        CONTEXT.fillStyle=window.color;
+        CONTEXT.fill();
+        dx = -dx;
+    }
+    if(y + dy < ballRadius) {
+    dy = -dy;
+} else if(y + dy > canvas.height-ballRadius) {
+    if(x > paddleX && x < paddleX + paddleWidth) {
+        dy = -dy;
+    }
+    else {
+        alert("GAME OVER");
+        document.location.reload();
+        clearInterval(interval);
+    }
+}
+if(rightPressed) {
+    paddleX += 4;
+}
+else if(leftPressed) {
+    paddleX -= 4;
+}
+if(rightPressed && paddleX < canvas.width - paddleWidth) {
+    paddleX += 4;
+}
+else if(leftPressed && paddleX > 0) {
+    paddleX -= 4;
+}
+ var r = Math.floor(Math.random() * 2);
+    x += dx+r;
+    y += dy+r;
+}
+function drawBricks(){
+
+    if(window.redstatus==1){
+CONTEXT.beginPath();
+CONTEXT.rect(60, 80, 100, 30);
+CONTEXT.fillStyle = "red";
+CONTEXT.fill();
+CONTEXT.closePath();
+}
+
+if(bluestatus==1){
+CONTEXT.beginPath();
+CONTEXT.rect(180, 80, 100, 30);
+CONTEXT.fillStyle = "blue";
+CONTEXT.fill();
+CONTEXT.closePath();
+}
+if(window.greenstatus==1){
+CONTEXT.beginPath();
+CONTEXT.rect(300, 80, 100, 30);
+CONTEXT.fillStyle = "green";
+CONTEXT.fill();
+CONTEXT.closePath();}
+if(window.purplestatus==1){
+CONTEXT.beginPath();
+CONTEXT.rect(120, 180, 100, 30);
+CONTEXT.fillStyle = "purple";
+CONTEXT.fill();
+CONTEXT.closePath();
+}
+if(yellowstatus==1){
+CONTEXT.beginPath();
+CONTEXT.rect(250, 180, 100, 30);
+CONTEXT.fillStyle = "yellow";
+CONTEXT.fill();
+CONTEXT.closePath();}
+
+CONTEXT.beginPath();
+CONTEXT.rect(190,250,100,15);
+CONTEXT.fillStyle="#000000";
+CONTEXT.fill();
+CONTEXT.closePath();
+
+}
+
+
+var interval = setInterval(draw, 10);
+</script>
+
+</body>
+</html>
